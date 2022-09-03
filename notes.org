@@ -1,0 +1,113 @@
+These are the examples provided in the lesson:
+
+Example of 'CreateDogs' class that utilizes the 'create_table' method from the 'ActiveRecord::Migration' class:
+#+begin_src ruby
+  class CreateDogs < ActiveRecord::Migration[6.1]
+    def change
+      create_table :dogs do |t|
+        t.string :name
+        t.string :breed
+      end
+    end
+  end
+#+end_src
+
+Example model that inherits from 'ActiveRecord::Base':
+#+begin_src ruby
+  class Dog < ActiveRecord::Base
+
+  end
+#+end_src
+
+These are the commands used to create new instances of the 'Dog' class that inherits methods from the 'ActiveRecord::Base' class:
+#+begin_src ruby
+shiloh = Dog.new()
+
+shiloh.name = "Shiloh"
+shiloh.breed = "Beagle"
+shiloh.save()
+
+Dog.find_by(:name => "Shiloh") == shiloh
+#+end_src
+
+'CreateCandies' class example:
+#+begin_src ruby
+  # db/migrate/20130915204319_create_candies.rb
+  class CreateCandies < ActiveRecord::Migration[6.1]
+    def change
+      create_table :candies do |t|
+        t.string :name
+        t.integer :calories
+        t.timestamps
+      end
+    end
+  end
+#+end_src
+
+Related 'model' example:
+#+begin_src ruby
+  # app/models/candy.rb
+  class Candy < ActiveRecord::Base
+  end
+#+end_src
+
+The assignment then called to run the following command in their fake scenario:
+#+begin_src bash
+bundle exec rake db:migrate
+#+end_src
+
+These '.create()' commands were then used to create new candies into the database:
+#+begin_src ruby
+Candy.create(name: "Milky Way Midnight", calories: 220)
+Candy.create(name: "Snickers", calories: 550)
+Candy.create(name: "Reese's Peanut Butter Cups", calories: 210)
+#+end_src
+
+The assignment then used the following commands to retrieve the information:
+#+begin_src ruby
+reeses = Candy.find_by(:name => "Reese's Peanut Butter Cups")
+Candy.first()
+snickers = Candy.find(2)
+#+end_src
+
+The assignment then used the following commands to view the attributes via the 'pry' breakpoint's console:
+#+begin_src ruby
+reeses = Candy.find(3)
+
+reeses.calories
+
+reeses.name
+#+end_src
+
+The assignment then used the following commands to update the information and view the table information:
+#+begin_src ruby
+snickers = Candy.find(2)
+
+snickers.update(:calories => 250)
+
+reeses = Candy.last()
+
+reeses.update(:name => "Reeeese's Peanut Butter Cups")
+
+Candy.find(2)
+
+Candy.last()
+#+end_src
+
+For the actual assignment:
+I then made sure that during my modifications for the assignment itself that I used the following commands to use 'db:migrate' and 'db:rollback' accordingly with the test environment:
+#+begin_src bash
+bundle exec rake db:migrate RACK_ENV=test
+bundle exec rake db:rollback RACK_ENV=test
+#+end_src
+
+These are the two commands to just migrate the 'development' database:
+#+begin_src bash
+bundle exec rake db:migrate
+bundle exec rake console
+#+end_src
+
+Annoyingly, the tests were bugging out even with my actual correct code, so I had to re-clone the entire repo, and run this command before running 'learn test' to get all of my tests to successfully pass:
+#+begin_src bash
+samuelbanya@Samuels-MBP ~/hub/Development/code/phase-3/phase-3-active-record-costume-store-lab $ bundle exec rake db:migrate RACK_ENV=test
+#+end_src
